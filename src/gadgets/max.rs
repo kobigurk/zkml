@@ -7,7 +7,7 @@ use halo2_proofs::{
   poly::Rotation,
 };
 
-use crate::gadgets::gadget::convert_to_u64;
+use crate::{gadgets::gadget::convert_to_u64, utils::div_ceil};
 
 use super::gadget::{Gadget, GadgetConfig, GadgetType};
 
@@ -159,7 +159,7 @@ impl<F: PrimeField> Gadget<F> for MaxChip<F> {
     }
 
     // TODO: pretty sure this is correct but check
-    let num_iters = inputs.len().div_ceil(self.num_inputs_per_row()) + self.num_inputs_per_row();
+    let num_iters = div_ceil(inputs.len(), self.num_inputs_per_row()) + self.num_inputs_per_row();
 
     let mut outputs = self.op_aligned_rows(
       layouter.namespace(|| "max forward"),

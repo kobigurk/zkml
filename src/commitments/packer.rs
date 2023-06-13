@@ -16,6 +16,7 @@ use ndarray::{Array, IxDyn};
 use crate::{
   gadgets::gadget::{GadgetConfig, GadgetType},
   layers::layer::{AssignedTensor, CellRc},
+  utils::div_ceil,
 };
 
 const NUM_BITS_PER_FIELD_ELEM: usize = 254;
@@ -308,7 +309,7 @@ impl<F: PrimeField> PackerChip<F> {
     let zero = constants.get(&0).unwrap().clone();
 
     let num_elems_per_row = self.config.num_packed_per_row * self.config.num_elem_per_packed;
-    for i in 0..(values.len().div_ceil(num_elems_per_row)) {
+    for i in 0..(div_ceil(values.len(), num_elems_per_row)) {
       let row =
         values[i * num_elems_per_row..min((i + 1) * num_elems_per_row, values.len())].to_vec();
       let (row_packed, row_assigned) = self
@@ -354,7 +355,7 @@ impl<F: PrimeField> PackerChip<F> {
     let zero = constants.get(&0).unwrap().clone();
 
     let num_elems_per_row = self.config.num_packed_per_row * self.config.num_elem_per_packed;
-    for i in 0..(values.len().div_ceil(num_elems_per_row)) {
+    for i in 0..(div_ceil(values.len(), num_elems_per_row)) {
       let row =
         values[i * num_elems_per_row..min((i + 1) * num_elems_per_row, values.len())].to_vec();
       let row_packed = self

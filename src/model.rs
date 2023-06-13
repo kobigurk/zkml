@@ -465,6 +465,7 @@ impl<F: PrimeField + Ord + FromUniformBytes<64>> ModelCircuit<F> {
       num_bits_per_elem: config.bits_per_elem.unwrap_or(config.k),
       ..cloned_gadget
     };
+    println!("gadget config: {:?}", *gadget.lock().unwrap());
 
     ModelCircuit {
       tensors,

@@ -175,6 +175,7 @@ pub fn verify_circuit_kzg(
   public_vals_fname: &str,
 ) {
   let degree = circuit.k as u32;
+  println!("degree: {}", degree);
   let params = get_kzg_params("./params_kzg", degree);
   println!("Loaded the parameters");
 
@@ -185,6 +186,7 @@ pub fn verify_circuit_kzg(
   )
   .unwrap();
   println!("Loaded vkey");
+  println!("vk: {}, {}", vk.fixed_commitments().len(), vk.permutation().commitments().len());
 
   let proof = std::fs::read(proof_fname).unwrap();
 
@@ -196,6 +198,9 @@ pub fn verify_circuit_kzg(
 
   let strategy = SingleStrategy::new(&params);
   let transcript = Blake2bRead::<_, _, Challenge255<_>>::init(&proof[..]);
+  println!("public vals: {:?}", public_vals);
+  println!("proof: {:?}", proof);
+  println!("params: {:?}", &params.g_lagrange[..10]);
 
   let start = Instant::now();
   let verify_start = start.elapsed();

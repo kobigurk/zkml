@@ -111,6 +111,8 @@ impl<F: PrimeField + Ord + FromUniformBytes<64>> Commit<F>
     values: &Vec<CellRc<F>>,
     blinding: CellRc<F>,
   ) -> Result<Vec<CellRc<F>>, Error> {
+    println!("values: {:?}", &values[..10]);
+    println!("blinding: {:?}", blinding);
     let chip = Pow5Chip::construct(self.poseidon_config.clone());
     let mut hasher: MyHash<F, Pow5Chip<F, 3, 2>, P128Pow5T3Gen<F, 0>, ConstantLength<L>, 3, 2> =
       Sponge::new(chip, layouter.namespace(|| "sponge"))
